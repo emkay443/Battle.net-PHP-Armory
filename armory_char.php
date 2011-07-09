@@ -15,7 +15,6 @@ class wowchar{
 
 	public $load = "";
 	public $json;
-	public $a;
 
 	/* Constructor */
 	public function __construct($n, $r, $re, $lang){
@@ -415,7 +414,7 @@ class wowchar{
 		}
 	}
 	
-	/* Returns the WoWHead URL on the item's icon with a 2px border in the , or false, if the item doesn't exist */
+	/* Returns the WoWHead URL on the item's icon with a 2px border colored by rarity, or false, if the item doesn't exist */
 	public function getItemIconLink($slot){
 		if(isset($this->json->items->$slot)){
 			return '<a href="'.$this->getItemLink($slot).'" target="_blank"><img src="'.$this->getItemIcon($slot).'" style="border:2px solid '.$this->getItemColor($slot).'"></a>';
@@ -424,6 +423,7 @@ class wowchar{
 		}		
 	}
 	
+	/* Returns the itemlevel of the item in the given slot or false, if the item doesn't exist */
 	public function getItemLevel($itemID){
 		$itemURL = "http://".$this->region.".battle.net/api/wow/data/item/".$itemID;
 		$curl = curl_init();
