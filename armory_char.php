@@ -100,6 +100,26 @@ class wowchar{
 	public function getAchievementPoints(){
 		return $this->json->achievementPoints;
 	}
+
+	/* Returns the character's average itemlevel */
+	public function getAverageItemLevel(){
+		return $this->json->items->averageItemLevel;
+	}
+	
+	/* Returns the character's average itemlevel (equipped items)*/
+	public function getAverageItemLevelEquipped(){
+		return $this->json->items->averageItemLevelEquipped;
+	}
+	
+	/* Returns the character's avatar URL */
+	public function getAvatarLink(){
+		return 'http://'.$this->getRegion().'.battle.net/static-render/'.$this->getRegion().'/'.$this->json->thumbnail;
+	}
+	
+	/* Returns the HTML code for the character's avatar */
+	public function getAvatar(){
+		return '<img src="'.$this->getAvatarLink().'" border="0">';
+	}
 	
 	
 	#############################
@@ -265,6 +285,7 @@ class wowchar{
 	/* Possible item slots are: */
 	/* head, neck, back, chest, shirt, tabard, wrist, hands, waist, legs, feet, finger1, finger2, trinket1, trinket2, mainHand, offHand, ranged */
 	
+	/* Expects item slot name */
 	/* Returns the raw data of the item in the given slot */
 	public function getItemData($slot){
 		if(isset($this->json->items->$slot)){
@@ -274,6 +295,7 @@ class wowchar{
 		}
 	}
 
+	/* Expects item slot name */
 	/* Returns the name of the item in the given slot */
 	public function getItemName($slot){
 		if(isset($this->json->items->$slot)){
@@ -288,6 +310,7 @@ class wowchar{
 		return $this->getItemName($slot);
 	}
 
+	/* Expects item slot name */
 	/* Returns the id of the item in the given slot */
 	public function getItemID($slot){
 		if(isset($this->json->items->$slot)){
@@ -297,6 +320,7 @@ class wowchar{
 		}
 	}
 
+	/* Expects item slot name */
 	/* Returns the icon url (56x56) of the item in the given slot */
 	public function getItemIcon($slot){
 		if(isset($this->json->items->$slot)){
@@ -306,6 +330,7 @@ class wowchar{
 		}
 	}
 
+	/* Expects item slot name */
 	/* Returns the rarity color of the item in the given slot */
 	public function getItemColor($slot){
 		if(isset($this->json->items->$slot)){
@@ -342,6 +367,7 @@ class wowchar{
 		}
 	}
 	
+	/* Expects item slot name */
 	/* Returns a list of gems ("gem0:gem1:gem2") in the item in the given slot */
 	public function getItemGems($slot){
 		if(isset($this->json->items->$slot)){
@@ -371,6 +397,7 @@ class wowchar{
 		}		
 	}
 	
+	/* Expects item slot name */
 	/* Returns the enchant on the item in the given slot or false if not existing or unenchanted */
 	public function getItemEnchant($slot){
 		if(isset($this->json->items->$slot)){
@@ -385,6 +412,7 @@ class wowchar{
 		}	
 	}
 	
+	/* Expects item slot name */
 	/* Returns a list of equipped set items ("item0:item1:item2") of the same set as the item in the given slot, or empty string, if there is no set, or false, if the item doesn't exist */
 	public function getItemSetItems($slot){
 		if(isset($this->json->items->$slot)){
@@ -405,6 +433,7 @@ class wowchar{
 		}	
 	}
 	
+	/* Expects item slot name */
 	/* Returns the WoWHead URL of the item in the given slot, or false, if the item doesn't exist */
 	public function getItemLink($slot){
 		if(isset($this->json->items->$slot)){
@@ -414,6 +443,7 @@ class wowchar{
 		}
 	}
 	
+	/* Expects item slot name */
 	/* Returns the WoWHead URL on the item's icon with a 2px border colored by rarity, or false, if the item doesn't exist */
 	public function getItemIconLink($slot){
 		if(isset($this->json->items->$slot)){
@@ -423,7 +453,8 @@ class wowchar{
 		}		
 	}
 	
-	/* Returns the itemlevel of the item in the given slot or false, if the item doesn't exist */
+	/* Expects item id */
+	/* Returns the itemlevel of the item with the given id or false, if an item with that id doesn't exist */
 	public function getItemLevel($itemID){
 		$itemURL = "http://".$this->region.".battle.net/api/wow/data/item/".$itemID;
 		$curl = curl_init();
@@ -443,86 +474,84 @@ class wowchar{
 		}
 	}
 
-	public function getAverageItemLevel(){
-		return $this->json->items->averageItemLevel;
-	}
+
+	##################################
+	###    PROFESSION FUNCTIONS    ###
+	##################################
 	
-	public function getAverageItemLevelEquipped(){
-		return $this->json->items->averageItemLevelEquipped;
-	}
-	
-	public function getAvatarLink(){
-		return 'http://'.$this->getRegion().'.battle.net/static-render/'.$this->getRegion().'/'.$this->json->thumbnail;
-	}
-	
-	public function getAvatar(){
-		return '<img src="'.$this->getAvatarLink().'" border="0">';
-	}
-	
+	/* Returns true, if the player has a profession or false, if not */
 	public function getHasProfessionOne(){
-		if(isset($this->json->professions->primary[0])){
+		if($this->getHasProfessionOne()){
 			return true;
 		} else {
 			return false;
 		}
 	}
 	
+	/* Returns the name of the character's first profession or false, if the player doesn't have a profession */
 	public function getProfessionOne(){
-		if(isset($this->json->professions->primary[0])){
+		if($this->getHasProfessionOne()){
 			return $this->json->professions->primary[0]->name;
 		} else {
 			return false;
 		}
 	}
 	
+	/* Returns the raw data of the character's first profession or false, if the player doesn't have a profession */
 	public function getProfessionOneData(){
-		if(isset($this->json->professions->primary[0])){
+		if($this->getHasProfessionOne()){
 			return $this->json->professions->primary[0];
 		} else {
 			return false;
 		}
 	}
 	
+	/* Returns the skill ("Skill/Max") of the character's first profession or false, if the player doesn't have a profession */
 	public function getProfessionOneSkill(){
-		if(isset($this->json->professions->primary[0])){
+		if($this->getHasProfessionOne()){
 			return $this->getProfessionOneData()->rank.'/'.$this->getProfessionOneData()->max;
 		} else {
 			return false;
 		}
 	}
 	
+	/* Returns true, if the player has a second profession or false, if not */
 	public function getHasProfessionTwo(){
-		if(isset($this->json->professions->primary[1])){
+		if($this->getHasProfessionTwo()){
 			return true;
 		} else {
 			return false;
 		}
 	}
 	
+	/* Returns the name of the character's second profession or false, if the player doesn't have a second profession */
 	public function getProfessionTwo(){
-		if(isset($this->json->professions->primary[1])){
+		if($this->getHasProfessionTwo()){
 			return $this->json->professions->primary[1]->name;
 		} else {
 			return false;
 		}
 	}
 	
+	/* Returns the raw data of the character's second profession or false, if the player doesn't have a second profession */
 	public function getProfessionTwoData(){
-		if(isset($this->json->professions->primary[1])){
+		if($this->getHasProfessionTwo()){
 			return $this->json->professions->primary[1];
 		} else {
 			return false;
 		}
 	}
 	
+	/* Returns the skill ("Skill/Max") of the character's second profession or false, if the player doesn't have a second profession */
 	public function getProfessionTwoSkill(){
-		if(isset($this->json->professions->primary[1])){
+		if($this->getHasProfessionTwo()){
 			return $this->getProfessionTwoData()->rank.'/'.$this->getProfessionTwoData()->max;
 		} else {
 			return false;
 		}
 	}
 	
+	/* Returns how many professions the character has (0, 1 or 2) */
 	public function getProfessionCount(){
 		$count = 0;
 		if(isset($this->json->professions->primary)){
@@ -533,6 +562,7 @@ class wowchar{
 		return $count;
 	}
 	
+	/* Returns true, if the character has learned "First Aid, or false, if not" */
 	public function getHasFirstAid(){
 		if(isset($this->json->professions->secondary)){
 			foreach($this->json->professions->secondary as $tmp){
@@ -542,6 +572,7 @@ class wowchar{
 		}
 	}
 	
+	/* Returns the skill ("Skill/Max") of "First Aid" or false, if the player hasn't learned "First Aid" */
 	public function getFirstAidSkill(){
 		if($this->getHasFirstAid()){
 			foreach($this->json->professions->secondary as $tmp){
@@ -551,6 +582,7 @@ class wowchar{
 		}
 	}
 	
+	/* Returns true, if the character has learned "Fishing", or false, if not */
 	public function getHasFishing(){
 		if(isset($this->json->professions->secondary)){
 			foreach($this->json->professions->secondary as $tmp){
@@ -560,6 +592,7 @@ class wowchar{
 		}
 	}
 	
+	/* Returns the skill ("Skill/Max") of "Fishing" or false, if the player hasn't learned "Fishing" */
 	public function getFishingSkill(){
 		if($this->getHasFishing()){
 			foreach($this->json->professions->secondary as $tmp){
@@ -569,6 +602,7 @@ class wowchar{
 		}
 	}
 	
+	/* Returns true, if the character has learned "Cooking" */
 	public function getHasCooking(){
 		if(isset($this->json->professions->secondary)){
 			foreach($this->json->professions->secondary as $tmp){
@@ -578,6 +612,7 @@ class wowchar{
 		}
 	}
 	
+	/* Returns the skill ("Skill/Max") of "Cooking" or false, if the player hasn't learned "Cooking" */
 	public function getCookingSkill(){
 		if($this->getHasCooking()){
 			foreach($this->json->professions->secondary as $tmp){
@@ -587,6 +622,7 @@ class wowchar{
 		}
 	}
 	
+	/* Returns true, if the character has learned "Archaeology", or false, if not */
 	public function getHasArchaeology(){
 		if(isset($this->json->professions->secondary)){
 			foreach($this->json->professions->secondary as $tmp){
@@ -596,6 +632,7 @@ class wowchar{
 		}
 	}
 	
+	/* Returns the skill ("Skill/Max") of "Archaeology" or false, if the player hasn't learned "Archaeology" */
 	public function getArchaeologySkill(){
 		if($this->getHasArchaeology()){
 			foreach($this->json->professions->secondary as $tmp){
@@ -604,7 +641,13 @@ class wowchar{
 			return false;
 		}
 	}
+
+
+	##############################
+	###    TALENT FUNCTIONS    ###
+	##############################
 	
+	/* Returns, how many talent specs the player has, or false, if not */
 	public function getHasTalents(){
 		if(isset($this->json->talents)){
 			return count($this->json->talents);
@@ -612,6 +655,7 @@ class wowchar{
 		return false;
 	}
 	
+	/* Returns the raw data of the first talent spec, or false, if the player hasn't got talents */
 	public function getTalentOneData(){
 		if($this->getHasTalents()){
 			return $this->json->talents[0];
@@ -619,6 +663,7 @@ class wowchar{
 		return false;
 	}
 	
+	/* Returns the name of the first talent spec, or false, if the player hasn't got talents */
 	public function getTalentOneName(){
 		if($this->getTalentOneData()){
 			return $this->getTalentOneData()->name;
@@ -626,6 +671,7 @@ class wowchar{
 		return false;
 	}
 	
+	/* Returns the talent points ("0/1/2") of the first talent spec, or false, if the player hasn't got talents */
 	public function getTalentOnePoints(){
 		if($this->getTalentOneData()){
 			$count = 0;
@@ -640,6 +686,7 @@ class wowchar{
 		return false;
 	}
 	
+	/* Returns the raw data of the second talent spec, or false, if the player hasn't got dualspec */
 	public function getTalentTwoData(){
 		if($this->getHasTalents() == 2){
 			return $this->json->talents[1];
@@ -647,6 +694,7 @@ class wowchar{
 		return false;
 	}
 	
+	/* Returns the name of the second talent spec, or false, if the player hasn't got dualspec */
 	public function getTalentTwoName(){
 		if($this->getTalentTwoData()){
 			return $this->getTalentTwoData()->name;
@@ -654,6 +702,7 @@ class wowchar{
 		return false;
 	}
 	
+	/* Returns the talent points ("0/1/2") of the second talent spec, or false, if the player hasn't got dualspec */
 	public function getTalentTwoPoints(){
 		if($this->getTalentTwoData()){
 			$count = 0;
@@ -668,6 +717,7 @@ class wowchar{
 		return false;
 	}
 	
+	/* Returns the id (0 or 1) of the active talent spec */
 	public function getActiveTalent(){
 		$count = 0;
 		foreach($this->json->talents as $spec){
@@ -677,17 +727,19 @@ class wowchar{
 		return -1;
 	}
 	
+	/* Returns the name of the active talent spec */
 	public function getActiveTalentName(){
 		if($this->getActiveTalent() != -1){
 			if(isset($this->json->talents[$this->getActiveTalent()]->name)) {
 				return $this->json->talents[$this->getActiveTalent()]->name;
 			} else {
-				return "Unverteilt";
+				return false;
 			}
 		}
 		return false;
 	}
 	
+	/* Returns the talent points ("0/1/2") of the active talent spec */
 	public function getActiveTalentPoints(){
 		if($this->getActiveTalent() != -1){
 			$count = 0;
@@ -702,6 +754,7 @@ class wowchar{
 		return false;	
 	}
 	
+	/* Returns the id (0 or 1) of the inactive talent spec */
 	public function getInactiveTalent(){
 		$count = 0;
 		foreach($this->json->talents as $spec){
@@ -711,17 +764,19 @@ class wowchar{
 		return -1;
 	}
 	
+	/* Returns the name of the inactive talent spec */
 	public function getInactiveTalentName(){
 		if($this->getInactiveTalent() != -1){
 			if(isset($this->json->talents[$this->getInactiveTalent()]->name)){
 				return $this->json->talents[$this->getInactiveTalent()]->name;
 			} else {
-				return "Unverteilt";
+				return false;
 			}
 		}
 		return false;
 	}
 	
+	/* Returns the talent points ("0/1/2") of the inactive talent spec */
 	public function getInactiveTalentPoints(){
 		if($this->getInactiveTalent() != -1){
 			$count = 0;
@@ -736,10 +791,31 @@ class wowchar{
 		return false;	
 	}
 	
-	public function getInactiveTalentLink(){
-		return 'http://'.$this->getRegion().'.battle.net/wow/'.$this->getLanguage().'/character/'.$this->getRealm().'/'.$this->getName().'/talent/primary';
+	/* Returns the URL to the first talentspec or false, if the player hasn't got any talents */
+	public function getTalentOneLink(){
+		if($this->getHasTalens() > 0){
+			return 'http://'.$this->getRegion().'.battle.net/wow/'.$this->getLanguage().'/character/'.$this->getRealm().'/'.$this->getName().'/talent/primary';
+		} else {
+			return false;
+		}
 	}
 	
+	/* Returns the URL to the second talentspec or false, if the player hasn't got dualspec */
+	public function getTalentTwoLink(){
+		if($this->getHasTalens() > 0){
+			return 'http://'.$this->getRegion().'.battle.net/wow/'.$this->getLanguage().'/character/'.$this->getRealm().'/'.$this->getName().'/talent/secondary';
+		} else {
+			return false;
+		}
+	}
+
+
+	###################################
+	###    PROGRESSION FUNCTIONS    ###
+	###################################
+	
+	/* Expects raid name (localized!) */
+	/* Returns, how often the character has completed the given raid, or false, if there isn't any raid with the given name */
 	public function getProgression($raid){
 		if(isset($this->json->progression->raids)){
 			$found = false;
@@ -758,6 +834,8 @@ class wowchar{
 		}
 	}
 	
+	/* Expects raid and boss name (localized!) */
+	/* Returns, how often the character has killed the given boss in the given raid, or false, if there isn't any boss or raid with the given names */
 	public function getProgressionEncounter($raid, $encounter){
 		if(isset($this->json->progression->raids)){
 			$found1 = false;
@@ -786,6 +864,8 @@ class wowchar{
 		}
 	}
 	
+	/* Expects raid name (localized!) */
+	/* Returns, how often the character has completed the given raid on heroic mode, or false, if there isn't any raid with the given name */
 	public function getProgressionHeroic($raid){
 		if(isset($this->json->progression->raids)){
 			$found = false;
@@ -804,6 +884,8 @@ class wowchar{
 		}
 	}
 	
+	/* Expects raid and boss name (localized!) */
+	/* Returns, how often the character has killed the given boss in the given raid on heroic mode, or false, if there isn't any boss or raid with the given names */
 	public function getProgressionEncounterHeroic($raid, $encounter){
 		if(isset($this->json->progression->raids)){
 			$found1 = false;
