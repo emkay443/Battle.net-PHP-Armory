@@ -15,6 +15,7 @@ class wowchar{
 
 	public $load = "";
 	public $json;
+	public $a;
 
 	/* Constructor */
 	public function __construct($n, $r, $re, $lang){
