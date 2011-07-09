@@ -24,6 +24,5 @@
 	}
 
 	echo '<br><hr><form action="'.$_SERVER['REQUEST_URI'].'" method="POST">Charaktername: <input type="text" name="charakter"><br>Realm: <input type="text" name="realm"><br>Region: <input type="text" name="region" value="eu"><br>Sprache: <input type="text" name="language" value="de"><br><br><input type="submit" name="submit" value="Charakter suchen"></form>';
-
 	echo '</body>';
 ?>
