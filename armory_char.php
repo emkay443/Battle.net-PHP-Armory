@@ -1,7 +1,6 @@
 <?php
 class wowchar{
 	public $name = "";
-	
 	public $realm = "";
 	public $region = "";
 	public $language = "";
