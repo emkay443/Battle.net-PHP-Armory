@@ -1,6 +1,7 @@
 <?php
 class wowchar{
 	public $name = "";
+	
 	public $realm = "";
 	public $region = "";
 	public $language = "";
@@ -36,7 +37,7 @@ class wowchar{
 			$lang2 = "en-US";
 		}
 
-		$charURL = "http://".$this->region.".battle.net/api/wow/character/".$this->realm."/".utf8_encode($this->name)."?fields=items,professions,talents,mounts,titles,guild,progression";
+		$charURL = "http://".$this->region.".battle.net/api/wow/character/".utf8_encode($this->realm)."/".utf8_encode($this->name)."?fields=items,professions,talents,mounts,titles,guild,progression";
 		$this->useragent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; ".$lang2."; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6 (.NET CLR 3.5.30729)";
 		ini_set('user_agent',$this->useragent);
 		header('Content-Type: text/html; charset=utf-8; Accept-Language: '.strtolower($lang2).','.$lang1.';q=0.5');
@@ -835,7 +836,7 @@ class wowchar{
 echo '<html><head><script type="text/javascript" src="http://static.wowhead.com/widgets/power.js"></script></head><body>';
 
 if(!isset($_POST['submit'])){
-	$a = new wowchar("Emk·y", "Aegwynn", "eu", "de");
+	$a = new wowchar("Emk√°y", "Aegwynn", "eu", "de");
 } else {
 	$a = new wowchar(utf8_decode($_POST['charakter']), $_POST['realm'], $_POST['region'], $_POST['language']);
 }
