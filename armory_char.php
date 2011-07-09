@@ -17,6 +17,7 @@ class wowchar{
 	public $json;
 
 	/* Constructor */
+	/* Expects the character's name, realm, region (eu, us, etc.) and localization (de, en, fr, etc.) */
 	public function __construct($n, $r, $re, $lang){
 		$this->name = strtolower($n);
 		$this->realm = strtolower($r);
