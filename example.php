@@ -1,7 +1,7 @@
 <?php
-	echo '<html><head><script type="text/javascript" src="http://static.wowhead.com/widgets/power.js"></script></head><body>';
 
 	include('armory_char.php');
+	echo '<html><head><script type="text/javascript" src="http://static.wowhead.com/widgets/power.js"></script></head><body>';
 	
 	if(!isset($_POST['submit'])){
 		$a = new wowchar("Emkáy", "Aegwynn", "eu", "de");
